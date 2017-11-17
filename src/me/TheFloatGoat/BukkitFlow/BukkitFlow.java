@@ -22,14 +22,22 @@ public class BukkitFlow extends JavaPlugin {
 
         if(!dataFolder.exists()) {
             dataFolder.mkdir();
-            System.out.println(prefix+"To setup the levels, type /bukkitflow levels help");
 
-
-            //TODO create a scoreconfig.yml file
+            //create a scoreconfig.yml file
             File configFile = new File(getDataFolder(), "scorefile.yml");
+
             try {
+
                 configFile.createNewFile();
+
+                //Import the default levels
+                LevelImporter levelImporter = new LevelImporter(this);
+                int imported = levelImporter.ImportLevels();
+                System.out.println(prefix + (imported==0?"No levels we're found":"Imported "+imported+" levels!"));
+
             } catch (IOException e) {
+
+                System.out.println(prefix+"An error occurred while trying to write to disk");
             }
 
         }

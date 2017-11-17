@@ -16,6 +16,26 @@ public class ScoreHandler {
         this.plugin = plugin;
     }
 
+    int getScore(Player player) {
+        int score = -1;
+
+        File scoreFile = new File(plugin.getDataFolder(), "scorefile.yml");
+        FileConfiguration scoreConfig = YamlConfiguration.loadConfiguration(scoreFile);
+
+        String uuid = player.getUniqueId().toString();
+
+        if (scoreConfig.contains(uuid)) {
+            try {
+                score = scoreConfig.getInt(uuid);
+            }catch (Exception e) {
+                //Failed to load score, let's keep it at -1 for now
+            }
+        }
+
+        return score;
+    }
+
+
     void newScore(Player player, int score) {
 
         //Load a yml file

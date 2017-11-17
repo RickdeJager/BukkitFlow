@@ -18,6 +18,7 @@ public class CommandHandler implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
         if(commandSender instanceof Player) {
+            Player player = (Player) commandSender;
             if(args.length > 0) {
                 switch (args[0]) {
                     case "levels":
@@ -39,15 +40,30 @@ public class CommandHandler implements CommandExecutor {
 
                         break;
 
+                    case "score":
+
+                        ScoreHandler scoreHandler = new ScoreHandler(plugin);
+                        int score = scoreHandler.getScore(player);
+
+                        player.sendMessage(prefix+ (score>=0?"Current level: "+score:"You haven't completed a level yet."));
+
+                        break;
+
                     default:    //args[0] was a number, or something else
-                    Player player = (Player) commandSender;
-                    int id = 0;
-                    try {
-                        id = Integer.parseInt(args[0]);
-                    } catch (Exception e) {
-                        player.sendMessage("Level ID should be a number");
-                    }
-                    GameInventory gi = new GameInventory(id, player);
+                        scoreHandler = new ScoreHandler(plugin);
+                        int id = 0;
+                        score = scoreHandler.getScore(player);
+                        try {
+                            id = Integer.parseInt(args[0]);
+
+                            if(score + 1 >= id) {
+                                GameInventory gi = new GameInventory(id, player);
+                            }else {
+                                player.sendMessage(prefix+"You haven't unlocked that level yet.");
+                            }
+                        } catch (Exception e) {
+                            player.sendMessage(prefix+"Level ID should be a number.");
+                        }
 
                 }
             }
