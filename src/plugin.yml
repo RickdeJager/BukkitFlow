@@ -1,0 +1,9 @@
+name: BukkitFlow
+main: me.TheFloatGoat.BukkitFlow.BukkitFlow
+version: 0.1
+author: TheFloatGoat
+commands:
+  bukkitflow:
+    description: does stuff
+    aliases: [bf, flow]
+    usage: /bukkitflow
