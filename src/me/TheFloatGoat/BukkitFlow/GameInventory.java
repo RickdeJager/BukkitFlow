@@ -47,7 +47,7 @@ public class GameInventory {
             }else if (itemIDs[i] == -2) {
 
                 //Barrier block
-                ItemStack item = new ItemStack(Material.IRON_BARDING, 1);
+                ItemStack item = new ItemStack(Material.IRON_FENCE, 1);
                 ItemMeta meta = item.getItemMeta();
                 meta.setDisplayName("Barrier block");
                 item.setItemMeta(meta);

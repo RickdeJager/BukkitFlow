@@ -33,6 +33,12 @@ public class CommandHandler implements CommandExecutor {
                                     LevelImporter levelImporter = new LevelImporter(plugin);
                                     int imported = levelImporter.ImportLevels();
                                     commandSender.sendMessage(prefix + (imported==0?"No levels we're found":"Imported "+imported+" levels!"));
+                                    break;
+                                case "create":
+                                    //TODO init level creation ui
+                                    LevelCreationInventory levelCreationInventory = new LevelCreationInventory(plugin, player);
+                                    levelCreationInventory.createUI();
+                                    break;
                             }
                         }else {
                             commandSender.sendMessage(prefix+"/bukkitflow levels help");

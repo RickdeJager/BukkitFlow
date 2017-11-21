@@ -18,12 +18,12 @@ import java.util.Set;
 public class DragHandler implements Listener {
 
     Plugin plugin = Bukkit.getPluginManager().getPlugin("BukkitFlow");
+    String prefix = "[BukkitFlow] ";
 
     @SuppressWarnings("depreciation")
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent e) {
 
-        String prefix = "[BukkitFlow] ";
 
         if(e.getInventory().getName().contains("BukkitFlow")) {
 
