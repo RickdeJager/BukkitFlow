@@ -58,6 +58,14 @@ public class LevelCreationHandlers implements Listener {
 
                     }
                 }
+            } else {
+                if(e.getCursor().getItemMeta().getLore().contains("BukkitFlow")) { // might crash on nullPointers
+                    ItemStack cursorItem = e.getCursor();
+                    if(e.getClickedInventory() != null && e.getClickedInventory().getTitle().equals(title)) {
+                        e.getClickedInventory().setItem(e.getSlot(), cursorItem);
+                        e.setCancelled(true);
+                    }
+                }
             }
         }
     }

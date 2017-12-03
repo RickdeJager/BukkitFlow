@@ -14,6 +14,7 @@ public class BukkitFlow extends JavaPlugin {
         //init the listeners
         this.getServer().getPluginManager().registerEvents(new DragHandler(),this);
         this.getServer().getPluginManager().registerEvents(new DropBlocker(),this);
+        this.getServer().getPluginManager().registerEvents(new CloseInventoryHandler(), this);
         getCommand("bukkitflow").setExecutor(new CommandHandler(this));
 
 
