@@ -63,7 +63,7 @@ public class CommandHandler implements CommandExecutor {
                             id = Integer.parseInt(args[0]);
 
                             if(score + 1 >= id) {
-                                GameInventory gi = new GameInventory(id, player);
+                                GameInventory gi = new GameInventory(id, player, plugin);
                             }else {
                                 player.sendMessage(prefix+"You haven't unlocked that level yet.");
                             }

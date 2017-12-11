@@ -12,7 +12,7 @@ public class CloseInventoryHandler implements Listener {
 
         if(e.getInventory().getTitle().equals("BukkitFlow: Level creation")) {
 
-            e.getPlayer().getInventory().setContents(new ItemStack[36]);
+            e.getPlayer().getInventory().setContents(new ItemStack[36]);    //Clear the inventory
         }
     }
 

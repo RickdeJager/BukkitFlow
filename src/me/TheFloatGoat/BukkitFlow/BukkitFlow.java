@@ -1,5 +1,6 @@
 package me.TheFloatGoat.BukkitFlow;
 
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -12,9 +13,12 @@ public class BukkitFlow extends JavaPlugin {
     @Override
     public void onEnable() {
         //init the listeners
-        this.getServer().getPluginManager().registerEvents(new DragHandler(),this);
-        this.getServer().getPluginManager().registerEvents(new DropBlocker(),this);
-        this.getServer().getPluginManager().registerEvents(new CloseInventoryHandler(), this);
+        PluginManager pluginManager = this.getServer().getPluginManager();
+        pluginManager.registerEvents(new DragHandler(),this);
+        pluginManager.registerEvents(new DropBlocker(),this);
+        pluginManager.registerEvents(new LevelCreationHandlers(), this);
+        pluginManager.registerEvents(new CloseInventoryHandler(), this);
+
         getCommand("bukkitflow").setExecutor(new CommandHandler(this));
 
 

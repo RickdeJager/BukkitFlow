@@ -6,19 +6,23 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
+
 
 import java.util.ArrayList;
 
 public class GameInventory {
 
+    Plugin plugin;
     int[] itemIDs;
     int levelID;
     Player player;
 
-    public GameInventory(int lID, Player p) {
+    public GameInventory(int lID, Player p, Plugin plugin) {
         player = p;
         levelID = lID;
-        LevelLoader levelLoader = new LevelLoader();
+        this.plugin = plugin;
+        LevelLoader levelLoader = new LevelLoader(plugin);
         itemIDs = levelLoader.load(levelID);
         if(itemIDs == null) {
             player.sendMessage("Level not found.");

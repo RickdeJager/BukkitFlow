@@ -1,14 +1,16 @@
 package me.TheFloatGoat.BukkitFlow;
 
-import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.util.Scanner;
 
 public class LevelLoader {
 
-    public LevelLoader() {
+    Plugin plugin;
 
+    public LevelLoader(Plugin plugin) {
+        this.plugin = plugin;
     }
 
     /**
@@ -20,9 +22,10 @@ public class LevelLoader {
 
         int[] itemIDs;
 
+        System.out.println("Loading "+plugin.getDataFolder()+"/levels/"+levelID+".txt");
         try {
 
-            Scanner sc = new Scanner(new File(Bukkit.getPluginManager().getPlugin("BukkitFlow").getDataFolder()+"/levels/"+levelID+".txt"));
+            Scanner sc = new Scanner(new File(plugin.getDataFolder()+"/levels/"+levelID+".txt"));
             sc.useDelimiter("/");
             int size = sc.nextInt();        //First int will be size
             if (size % 9 != 0) return null; //Inventory size must be a multiple of 9

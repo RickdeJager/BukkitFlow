@@ -2,6 +2,8 @@ package me.TheFloatGoat.BukkitFlow;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -21,49 +23,67 @@ public class LevelCreationHandlers implements Listener {
 
         if(title.equals("BukkitFlow: Level creation")) {
 
-            if(e.getCurrentItem().getType() != Material.AIR) {
+            ItemStack item = e.getCurrentItem();
 
-                if(e.getCurrentItem().hasItemMeta()) {
+            if(item == null) return;
 
-                    String command = e.getCurrentItem().getItemMeta().getDisplayName().toLowerCase();
+            if(item.getType() != Material.AIR) {
+
+                if(item.hasItemMeta()) {
+
+                    String command = item.getItemMeta().getDisplayName().toLowerCase();
+                    HumanEntity player = e.getWhoClicked();
 
                     switch(command) {
                         case "accept":
-                            int id = 4;
+                            System.out.println("levelCreation.accept");
                             LevelSaver levelSaver = new LevelSaver(plugin);
-                            levelSaver.saveFile(id, e.getWhoClicked().getOpenInventory().getTopInventory().getContents());
-                            e.getWhoClicked().sendMessage("Saved level to \""+id+"\".txt");
+                            int id = levelSaver.findNextID();
+                            levelSaver.saveFile(id, player.getOpenInventory().getTopInventory().getContents());
+                            player.closeInventory();
+                            player.getInventory().clear();
+                            player.sendMessage("Saved level to \""+id+"\".txt");
                             e.setCancelled(true);
                             break;
                         case "dismiss":
-
-
+                            System.out.println("levelCreation.dismiss");
                             e.setCancelled(true);
+                            player.getInventory().clear();
+                            player.closeInventory();
                             break;
                         case "randomize":
-
+                            System.out.println("levelCreation.randomize");
                             e.setCancelled(true);
                             break;
                         case "add color...":
-
+                            System.out.println("levelCreation.addColor");
                             ItemStack glass = e.getCurrentItem();
                             e.setCancelled(true);
                             e.setCursor(glass);
                             break;
                         case "barrier block":
+                            System.out.println("levelCreation.barrier");
                             ItemStack barrier = e.getCurrentItem();
                             e.setCancelled(true);
                             e.setCursor(barrier);
                             break;
-
+                        case "void":
+                            System.out.println("levelCreation.void");
+                            ItemStack empty = e.getCurrentItem();
+                            empty.setAmount(9);
+                            e.setCancelled(true);
+                            e.setCursor(empty);
+                            break;
                     }
                 }
-            } else {
-                if(e.getCursor().getItemMeta().getLore().contains("BukkitFlow")) { // might crash on nullPointers
-                    ItemStack cursorItem = e.getCursor();
-                    if(e.getClickedInventory() != null && e.getClickedInventory().getTitle().equals(title)) {
-                        e.getClickedInventory().setItem(e.getSlot(), cursorItem);
-                        e.setCancelled(true);
+            } else if(item.hasItemMeta()){
+                if(item.getItemMeta().hasLore()) {
+                    if (item.getItemMeta().getLore().contains("BukkitFlow")) { // might crash on nullPointers
+                        ItemStack cursorItem = e.getCursor();
+                        if (e.getClickedInventory() != null && e.getClickedInventory().getTitle().equals(title)) {
+                            e.getClickedInventory().setItem(e.getSlot(), cursorItem);
+                            e.setCancelled(true);
+                        }
                     }
                 }
             }

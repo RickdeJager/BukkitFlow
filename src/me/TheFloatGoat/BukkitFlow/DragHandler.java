@@ -81,8 +81,8 @@ public class DragHandler implements Listener {
     public void onInventoryClickEvent(InventoryClickEvent e) {
 
         HumanEntity humanEntity = e.getWhoClicked();
-
-        if(humanEntity.getOpenInventory().getTopInventory().getName().contains("BukkitFlow")) {
+        //TODO: Test!!!
+        if(humanEntity.getOpenInventory().getTopInventory().getName().matches("BukkitFlow: level \\d")) {
 
             //Disable the player inventory if the game inventory is open
             if (!humanEntity.getOpenInventory().getTopInventory().equals(e.getClickedInventory())) {
@@ -109,7 +109,7 @@ public class DragHandler implements Listener {
     }
 
     ItemStack convertToGlassPanes(ItemStack input) {
-        ItemStack output = new ItemStack(Material.STAINED_GLASS, 42);
+        ItemStack output = new ItemStack(Material.STAINED_GLASS, 64);
 
         Short colorID = input.getDurability();
         output.setDurability(colorID);
