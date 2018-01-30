@@ -32,17 +32,13 @@ public class LevelCreationHandlers implements Listener {
                 if(item.hasItemMeta()) {
 
                     String command = item.getItemMeta().getDisplayName().toLowerCase();
-                    HumanEntity player = e.getWhoClicked();
+                    Player player = (Player) e.getWhoClicked();
 
                     switch(command) {
                         case "accept":
                             System.out.println("levelCreation.accept");
-                            LevelSaver levelSaver = new LevelSaver(plugin);
-                            int id = levelSaver.findNextID();
-                            levelSaver.saveFile(id, player.getOpenInventory().getTopInventory().getContents());
-                            player.closeInventory();
-                            player.getInventory().clear();
-                            player.sendMessage("Saved level to \""+id+"\".txt");
+                            GameInventory gameInventory = new GameInventory(-1, player, plugin);
+                            gameInventory.testRun(player.getOpenInventory().getTopInventory().getContents());
                             e.setCancelled(true);
                             break;
                         case "dismiss":

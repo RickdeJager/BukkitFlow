@@ -29,6 +29,7 @@ public class DragHandler implements Listener {
 
             PathChecker pathChecker = new PathChecker();
             boolean valid = false;
+            boolean testRun = e.getInventory().getName().toLowerCase().contains("test");
 
             Set<Integer> slots = e.getRawSlots();
 
@@ -46,18 +47,26 @@ public class DragHandler implements Listener {
             if(valid) {
 
                 if(pathChecker.win(e.getInventory(), e.getRawSlots())) {
+                    if(testRun){
 
-                    HumanEntity humanEntity = e.getWhoClicked();
-                    humanEntity.closeInventory();
-                    humanEntity.sendMessage(prefix+"Level completed!");
+                     LevelSaver levelSaver = new LevelSaver(plugin);
+                     int id = levelSaver.findNextID();
+                     levelSaver.saveFile(id, e.getInventory().getContents());
+                     e.getWhoClicked().sendMessage("Saving level as \""+id+".txt\"...");
+                    } else {
 
-                    ScoreHandler scoreHandler = new ScoreHandler(plugin);
-                    String scoreString = e.getInventory().getTitle().replaceAll("[^0-9]","");
-                    try {
-                        int score = Integer.parseInt(scoreString);
-                        scoreHandler.newScore((Player) humanEntity, score);
-                    }catch (NumberFormatException exception) {
-                        System.out.println(prefix+"Failed while trying to save level: "+scoreString+" for "+humanEntity.getName() + " ( "+humanEntity.getUniqueId() + ")");
+                        HumanEntity humanEntity = e.getWhoClicked();
+                        humanEntity.closeInventory();
+                        humanEntity.sendMessage(prefix + "Level completed!");
+
+                        ScoreHandler scoreHandler = new ScoreHandler(plugin);
+                        String scoreString = e.getInventory().getTitle().replaceAll("[^0-9]", "");
+                        try {
+                            int score = Integer.parseInt(scoreString);
+                            scoreHandler.newScore((Player) humanEntity, score);
+                        } catch (NumberFormatException exception) {
+                            System.out.println(prefix + "Failed while trying to save level progress: " + scoreString + " for " + humanEntity.getName() + " ( " + humanEntity.getUniqueId() + ")");
+                        }
                     }
 
                 }
@@ -82,7 +91,7 @@ public class DragHandler implements Listener {
 
         HumanEntity humanEntity = e.getWhoClicked();
         //TODO: Test!!!
-        if(humanEntity.getOpenInventory().getTopInventory().getName().matches("BukkitFlow: level \\d")) {
+        if(humanEntity.getOpenInventory().getTopInventory().getName().matches("BukkitFlow: level (\\d|testing)")) {
 
             //Disable the player inventory if the game inventory is open
             if (!humanEntity.getOpenInventory().getTopInventory().equals(e.getClickedInventory())) {

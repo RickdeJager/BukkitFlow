@@ -31,6 +31,13 @@ public class GameInventory {
         buildInventory();
     }
 
+    public void testRun(ItemStack[] contents) {
+
+        Inventory inventory = Bukkit.createInventory(null, contents.length, "BukkitFlow: level testing");
+        inventory.setContents(contents);
+        player.openInventory(inventory);
+    }
+
     public void buildInventory() {
 
         Inventory inventory = Bukkit.createInventory(null, itemIDs.length, "BukkitFlow: level "+levelID);

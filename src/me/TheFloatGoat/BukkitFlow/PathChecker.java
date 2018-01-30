@@ -49,8 +49,10 @@ public class PathChecker {
                 for(int i = -3; i<=3; i+=2) {                           //A great hack-job to check up-left-right-down
 
                     int nextPos = curPos + (int)(Math.signum(i)*i*i);   //-9, -1, 1, 9
+                    //Check for screen wrapping.
+                    if(Math.abs(nextPos%9 - curPos%9) > 1) continue;
 
-                    if(nextPos < contents.length && nextPos >= 0) {
+                    if(nextPos < contents.length && nextPos >= 0) {     //If nextPos is within the current inventory:
 
                         if(contents[nextPos] != null && nextPos != anchorPoint) {
 
@@ -65,6 +67,8 @@ public class PathChecker {
                 for(int i = -3; i<=3; i+=2) {
 
                     int nextPos = curPos + (int) (Math.signum(i) * i * i);
+                    //Check for screen wrapping.
+                    if(Math.abs(nextPos%9 - curPos%9) > 1) continue;
 
                     if(set.contains(nextPos)) {
 
