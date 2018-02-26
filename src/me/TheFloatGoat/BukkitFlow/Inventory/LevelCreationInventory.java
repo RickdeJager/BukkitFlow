@@ -1,4 +1,4 @@
-package me.TheFloatGoat.BukkitFlow;
+package me.TheFloatGoat.BukkitFlow.Inventory;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -14,12 +14,12 @@ public class LevelCreationInventory {
     Player player;
     String prefix = "[BukkitFlow] ";
 
-    LevelCreationInventory(Plugin plugin, Player player) {
+    public LevelCreationInventory(Plugin plugin, Player player) {
         this.plugin = plugin;
         this.player = player;
     }
 
-    void createUI() {
+    public void createUI() {
 
         //This should be replaced by code to create a temp inventory and restore the old one after the user is done.
         ItemStack[] playerInv = player.getInventory().getContents();

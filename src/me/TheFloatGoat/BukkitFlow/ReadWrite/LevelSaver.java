@@ -1,4 +1,4 @@
-package me.TheFloatGoat.BukkitFlow;
+package me.TheFloatGoat.BukkitFlow.ReadWrite;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -10,11 +10,11 @@ public class LevelSaver {
 
     Plugin plugin;
 
-    LevelSaver(Plugin plugin) {
+    public LevelSaver(Plugin plugin) {
         this.plugin = plugin;
     }
 
-    boolean saveFile(int id, ItemStack[] contents) {
+    public boolean saveFile(int id, ItemStack[] contents) {
 
         int size = contents.length;
 
@@ -61,7 +61,7 @@ public class LevelSaver {
      * Finds the first available id in the level folder
      * @return the first available id in the level folder
      */
-    int findNextID() {
+    public int findNextID() {
 
         File levelFolder = new File(plugin.getDataFolder()+"/levels/");
         File[] files = levelFolder.listFiles();

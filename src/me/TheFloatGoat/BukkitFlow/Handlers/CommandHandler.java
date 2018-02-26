@@ -1,5 +1,9 @@
-package me.TheFloatGoat.BukkitFlow;
+package me.TheFloatGoat.BukkitFlow.Handlers;
 
+import me.TheFloatGoat.BukkitFlow.Inventory.GameInventory;
+import me.TheFloatGoat.BukkitFlow.Inventory.LevelCreationInventory;
+import me.TheFloatGoat.BukkitFlow.ReadWrite.LevelImporter;
+import me.TheFloatGoat.BukkitFlow.Inventory.ScoreKeeper;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,7 +15,7 @@ public class CommandHandler implements CommandExecutor {
     String prefix = "[BukkitFlow] ";
     Plugin plugin;
 
-    CommandHandler(Plugin plugin) {
+    public CommandHandler(Plugin plugin) {
         this.plugin = plugin;
     }
 
@@ -48,22 +52,23 @@ public class CommandHandler implements CommandExecutor {
 
                     case "score":
 
-                        ScoreHandler scoreHandler = new ScoreHandler(plugin);
-                        int score = scoreHandler.getScore(player);
+                        ScoreKeeper scoreKeeper = new ScoreKeeper(plugin);
+                        int score = scoreKeeper.getScore(player);
 
                         player.sendMessage(prefix+ (score>=0?"Current level: "+score:"You haven't completed a level yet."));
 
                         break;
 
                     default:    //args[0] was a number, or something else
-                        scoreHandler = new ScoreHandler(plugin);
+                        scoreKeeper = new ScoreKeeper(plugin);
                         int id = 0;
-                        score = scoreHandler.getScore(player);
+                        score = scoreKeeper.getScore(player);
                         try {
                             id = Integer.parseInt(args[0]);
 
                             if(score + 1 >= id) {
-                                GameInventory gi = new GameInventory(id, player, plugin);
+                                GameInventory gi = new GameInventory(plugin);
+                                player.openInventory(gi.fromID(id));
                             }else {
                                 player.sendMessage(prefix+"You haven't unlocked that level yet.");
                             }

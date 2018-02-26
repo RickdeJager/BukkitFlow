@@ -1,4 +1,4 @@
-package me.TheFloatGoat.BukkitFlow;
+package me.TheFloatGoat.BukkitFlow.Handlers;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

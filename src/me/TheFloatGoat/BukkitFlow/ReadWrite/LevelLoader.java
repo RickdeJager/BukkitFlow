@@ -1,4 +1,4 @@
-package me.TheFloatGoat.BukkitFlow;
+package me.TheFloatGoat.BukkitFlow.ReadWrite;
 
 import org.bukkit.plugin.Plugin;
 
@@ -18,7 +18,7 @@ public class LevelLoader {
      * @param levelID   levelID of the level to be loaded.
      * @return  returns an array of ints, corresponding to color values to be set later. Does not check for negative numbers!
      */
-    int[] load(int levelID) {
+    public int[] load(int levelID) {
 
         int[] itemIDs;
 

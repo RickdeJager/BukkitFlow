@@ -1,5 +1,8 @@
-package me.TheFloatGoat.BukkitFlow;
+package me.TheFloatGoat.BukkitFlow.Handlers;
 
+import me.TheFloatGoat.BukkitFlow.ReadWrite.LevelSaver;
+import me.TheFloatGoat.BukkitFlow.Checkers.PathChecker;
+import me.TheFloatGoat.BukkitFlow.Inventory.ScoreKeeper;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
@@ -59,11 +62,11 @@ public class DragHandler implements Listener {
                         humanEntity.closeInventory();
                         humanEntity.sendMessage(prefix + "Level completed!");
 
-                        ScoreHandler scoreHandler = new ScoreHandler(plugin);
+                        ScoreKeeper scoreKeeper = new ScoreKeeper(plugin);
                         String scoreString = e.getInventory().getTitle().replaceAll("[^0-9]", "");
                         try {
                             int score = Integer.parseInt(scoreString);
-                            scoreHandler.newScore((Player) humanEntity, score);
+                            scoreKeeper.newScore((Player) humanEntity, score);
                         } catch (NumberFormatException exception) {
                             System.out.println(prefix + "Failed while trying to save level progress: " + scoreString + " for " + humanEntity.getName() + " ( " + humanEntity.getUniqueId() + ")");
                         }

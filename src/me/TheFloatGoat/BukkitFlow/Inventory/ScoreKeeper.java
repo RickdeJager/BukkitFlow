@@ -1,4 +1,4 @@
-package me.TheFloatGoat.BukkitFlow;
+package me.TheFloatGoat.BukkitFlow.Inventory;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -8,15 +8,15 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.IOException;
 
-public class ScoreHandler {
+public class ScoreKeeper {
 
     Plugin plugin;
 
-    ScoreHandler(Plugin plugin) {
+    public ScoreKeeper(Plugin plugin) {
         this.plugin = plugin;
     }
 
-    int getScore(Player player) {
+    public int getScore(Player player) {
         int score = -1;
 
         File scoreFile = new File(plugin.getDataFolder(), "scorefile.yml");
@@ -36,7 +36,7 @@ public class ScoreHandler {
     }
 
 
-    void newScore(Player player, int score) {
+    public void newScore(Player player, int score) {
 
         //Load a yml file
 

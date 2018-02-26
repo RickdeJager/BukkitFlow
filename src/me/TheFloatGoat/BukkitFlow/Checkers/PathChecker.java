@@ -1,4 +1,4 @@
-package me.TheFloatGoat.BukkitFlow;
+package me.TheFloatGoat.BukkitFlow.Checkers;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;

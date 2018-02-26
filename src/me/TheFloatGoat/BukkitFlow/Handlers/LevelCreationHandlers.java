@@ -1,8 +1,9 @@
-package me.TheFloatGoat.BukkitFlow;
+package me.TheFloatGoat.BukkitFlow.Handlers;
 
+import me.TheFloatGoat.BukkitFlow.Inventory.GameInventory;
+import me.TheFloatGoat.BukkitFlow.LevelCreation.RandomLevelCreator;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -37,8 +38,8 @@ public class LevelCreationHandlers implements Listener {
                     switch(command) {
                         case "accept":
                             System.out.println("levelCreation.accept");
-                            GameInventory gameInventory = new GameInventory(-1, player, plugin);
-                            gameInventory.testRun(player.getOpenInventory().getTopInventory().getContents());
+                            GameInventory gameInventory = new GameInventory(plugin);
+                            player.openInventory(gameInventory.testRun(player.getOpenInventory().getTopInventory().getContents()));
                             e.setCancelled(true);
                             break;
                         case "dismiss":
@@ -49,6 +50,10 @@ public class LevelCreationHandlers implements Listener {
                             break;
                         case "randomize":
                             System.out.println("levelCreation.randomize");
+                            GameInventory gi = new GameInventory(plugin);
+                            RandomLevelCreator randomLevelCreator = new RandomLevelCreator(plugin);
+                            //player.openInventory(gi.buildInventory(randomLevelCreator.createLevel(),-99));
+                            player.getOpenInventory().getTopInventory().setContents(gi.getItemstack(randomLevelCreator.createLevel()));
                             e.setCancelled(true);
                             break;
                         case "add color...":

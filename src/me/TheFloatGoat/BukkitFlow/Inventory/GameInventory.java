@@ -1,7 +1,9 @@
-package me.TheFloatGoat.BukkitFlow;
+package me.TheFloatGoat.BukkitFlow.Inventory;
 
+import me.TheFloatGoat.BukkitFlow.ReadWrite.LevelLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -14,55 +16,48 @@ import java.util.ArrayList;
 public class GameInventory {
 
     Plugin plugin;
-    int[] itemIDs;
-    int levelID;
-    Player player;
 
-    public GameInventory(int lID, Player p, Plugin plugin) {
-        player = p;
-        levelID = lID;
+    public GameInventory(Plugin plugin) {
         this.plugin = plugin;
-        LevelLoader levelLoader = new LevelLoader(plugin);
-        itemIDs = levelLoader.load(levelID);
-        if(itemIDs == null) {
-            player.sendMessage("Level not found.");
-            return;
-        }
-        buildInventory();
     }
 
-    public void testRun(ItemStack[] contents) {
+    public Inventory testRun(ItemStack[] contents) {
 
         Inventory inventory = Bukkit.createInventory(null, contents.length, "BukkitFlow: level testing");
         inventory.setContents(contents);
-        player.openInventory(inventory);
+        return inventory;
     }
 
-    public void buildInventory() {
+    public Inventory fromID(int id) {
+        LevelLoader levelLoader = new LevelLoader(plugin);
+        return buildInventory(levelLoader.load(id), id);
+    }
 
-        Inventory inventory = Bukkit.createInventory(null, itemIDs.length, "BukkitFlow: level "+levelID);
+    public ItemStack[] getItemstack(int array[]) {
 
-        for(int i = 0; i < itemIDs.length; i++) {
+        ItemStack[] itemStacks = new ItemStack[array.length];
 
-            if(itemIDs[i] > 0) {
+        for(int i = 0; i < itemStacks.length; i++) {
 
-                ItemStack item = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) itemIDs[i]);
+            if(array[i] > 0) {
+
+                ItemStack item = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) array[i]);
                 ItemMeta meta = item.getItemMeta();
                 meta.setDisplayName("Anchor Point");
                 ArrayList<String> loreList = new ArrayList<>();
                 loreList.add("BukkitFlow");
                 meta.setLore(loreList);
                 item.setItemMeta(meta);
-                inventory.setItem(i, item);
+                itemStacks[i] = item;
 
-            }else if (itemIDs[i] == -2) {
+            }else if (array[i] == -2) {
 
                 //Barrier block
                 ItemStack item = new ItemStack(Material.IRON_FENCE, 1);
                 ItemMeta meta = item.getItemMeta();
                 meta.setDisplayName("Barrier block");
                 item.setItemMeta(meta);
-                inventory.setItem(i, item);
+                itemStacks[i] = item;
 
             }
 
@@ -70,7 +65,15 @@ public class GameInventory {
 
         }
 
-        player.openInventory(inventory);
+
+        return itemStacks;
+    }
+
+    public Inventory buildInventory(int[] array, int levelID) {
+
+        Inventory inventory = Bukkit.createInventory(null, array.length, "BukkitFlow: level "+levelID);
+        inventory.setContents(getItemstack(array));
+        return inventory;
 
     }
 

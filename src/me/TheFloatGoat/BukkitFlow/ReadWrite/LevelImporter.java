@@ -1,4 +1,4 @@
-package me.TheFloatGoat.BukkitFlow;
+package me.TheFloatGoat.BukkitFlow.ReadWrite;
 
 import org.apache.commons.io.FileUtils;
 import org.bukkit.plugin.Plugin;
@@ -10,7 +10,7 @@ public class LevelImporter {
 
     Plugin plugin;
 
-    LevelImporter(Plugin plugin) {
+    public LevelImporter(Plugin plugin) {
         this.plugin = plugin;
     }
 
@@ -18,7 +18,7 @@ public class LevelImporter {
      * Imports all levels from the .jar file
      * @return  Returns the number of imported levels
      */
-    int ImportLevels() {
+    public int ImportLevels() {
 
         int i = 0;
 
