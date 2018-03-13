@@ -1,5 +1,6 @@
 package me.TheFloatGoat.BukkitFlow.Handlers;
 
+import me.TheFloatGoat.BukkitFlow.Helpers.InventoryHelpers;
 import me.TheFloatGoat.BukkitFlow.ReadWrite.LevelSaver;
 import me.TheFloatGoat.BukkitFlow.Checkers.PathChecker;
 import me.TheFloatGoat.BukkitFlow.Inventory.ScoreKeeper;
@@ -11,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
@@ -22,6 +24,7 @@ public class DragHandler implements Listener {
 
     Plugin plugin = Bukkit.getPluginManager().getPlugin("BukkitFlow");
     String prefix = "[BukkitFlow] ";
+    InventoryHelpers IH = new InventoryHelpers();
 
     @SuppressWarnings("depreciation")
     @EventHandler
@@ -93,7 +96,7 @@ public class DragHandler implements Listener {
     public void onInventoryClickEvent(InventoryClickEvent e) {
 
         HumanEntity humanEntity = e.getWhoClicked();
-        //TODO: Test!!!
+
         if(humanEntity.getOpenInventory().getTopInventory().getName().matches("BukkitFlow: level (\\d|testing)")) {
 
             //Disable the player inventory if the game inventory is open
@@ -112,27 +115,12 @@ public class DragHandler implements Listener {
 
                 } else if (e.getCursor().getType() == Material.AIR && e.getCurrentItem().getType() == Material.STAINED_GLASS_PANE) {
 
-                    e.setCursor(convertToGlassPanes(e.getCurrentItem()));
+                    IH.removePath(e.getClickedInventory(), e.getCurrentItem().getDurability());
+                    e.setCursor(IH.convertToGlassPanes(e.getCurrentItem()));
                 }
 
                 e.setCancelled(true);   //Cancels the old event, but will set the cursor up with the new item stack if needed
             }
         }
     }
-
-    ItemStack convertToGlassPanes(ItemStack input) {
-        ItemStack output = new ItemStack(Material.STAINED_GLASS, 64);
-
-        Short colorID = input.getDurability();
-        output.setDurability(colorID);
-
-        ItemMeta meta = output.getItemMeta();
-        ArrayList<String> loreList = new ArrayList<>();
-        loreList.add("BukkitFlow");
-        meta.setLore(loreList);
-        output.setItemMeta(meta);
-
-        return output;
-    }
-
 }

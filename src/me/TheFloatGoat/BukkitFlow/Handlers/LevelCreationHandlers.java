@@ -1,5 +1,6 @@
 package me.TheFloatGoat.BukkitFlow.Handlers;
 
+import me.TheFloatGoat.BukkitFlow.Helpers.InventoryHelpers;
 import me.TheFloatGoat.BukkitFlow.Inventory.GameInventory;
 import me.TheFloatGoat.BukkitFlow.LevelCreation.RandomLevelCreator;
 import org.bukkit.Bukkit;
@@ -8,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
@@ -15,6 +17,7 @@ public class LevelCreationHandlers implements Listener {
 
 
     Plugin plugin = Bukkit.getPluginManager().getPlugin("BukkitFlow");
+    InventoryHelpers IH = new InventoryHelpers();
 
 
     @EventHandler
@@ -39,7 +42,9 @@ public class LevelCreationHandlers implements Listener {
                         case "accept":
                             System.out.println("levelCreation.accept");
                             GameInventory gameInventory = new GameInventory(plugin);
-                            player.openInventory(gameInventory.testRun(player.getOpenInventory().getTopInventory().getContents()));
+                            Inventory inventory = player.getOpenInventory().getTopInventory();
+                            IH.removePath(inventory, -1);
+                            player.openInventory(gameInventory.testRun(inventory.getContents()));
                             e.setCancelled(true);
                             break;
                         case "dismiss":
@@ -52,19 +57,18 @@ public class LevelCreationHandlers implements Listener {
                             System.out.println("levelCreation.randomize");
                             GameInventory gi = new GameInventory(plugin);
                             RandomLevelCreator randomLevelCreator = new RandomLevelCreator(plugin);
-                            //player.openInventory(gi.buildInventory(randomLevelCreator.createLevel(),-99));
-                            player.getOpenInventory().getTopInventory().setContents(gi.getItemstack(randomLevelCreator.createLevel()));
+                            player.getOpenInventory().getTopInventory().setContents(randomLevelCreator.createLevel());
                             e.setCancelled(true);
                             break;
                         case "add color...":
                             System.out.println("levelCreation.addColor");
-                            ItemStack glass = e.getCurrentItem();
+                            ItemStack glass = IH.genItem(true, e.getCurrentItem().getDurability());
                             e.setCancelled(true);
                             e.setCursor(glass);
                             break;
                         case "barrier block":
                             System.out.println("levelCreation.barrier");
-                            ItemStack barrier = e.getCurrentItem();
+                            ItemStack barrier = IH.genItem(false, -2);
                             e.setCancelled(true);
                             e.setCursor(barrier);
                             break;
