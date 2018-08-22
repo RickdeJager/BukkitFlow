@@ -22,7 +22,6 @@ public class LevelLoader {
 
         int[] itemIDs;
 
-        System.out.println("Loading "+plugin.getDataFolder()+"/levels/"+levelID+".txt");
         try {
 
             Scanner sc = new Scanner(new File(plugin.getDataFolder()+"/levels/"+levelID+".txt"));

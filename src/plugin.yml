@@ -7,3 +7,19 @@ commands:
     description: does stuff
     aliases: [bf, flow]
     usage: /bukkitflow
+permissions:
+  bukkitflow.*:
+    description: Gives access to all BukkitFLow commands
+    children:
+        bukkitflow.create: true
+        bukkitflow.play: true
+        bukkitflow.score: true
+  bukkitflow.create:
+    description: Allows you to create a new level
+    default: op
+  bukkitflow.score:
+    description: Allows you to check your score
+    default: true
+  bukkitflow.play:
+    description: Allows you to play levels
+    default: true

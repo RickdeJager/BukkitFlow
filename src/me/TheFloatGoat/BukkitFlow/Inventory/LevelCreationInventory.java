@@ -1,5 +1,7 @@
 package me.TheFloatGoat.BukkitFlow.Inventory;
 
+import me.TheFloatGoat.BukkitFlow.LevelCreation.CounterButton;
+import me.TheFloatGoat.BukkitFlow.LevelCreation.ToggleButton;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -36,8 +38,11 @@ public class LevelCreationInventory {
         player.openInventory(gameInventory);
         //Open the UI
         Inventory controlInventory = Bukkit.createInventory(null, 36, "");
-        controlInventory.setItem(9, createButton(5, "Accept"));
+        controlInventory.setItem(9, createButton(13, "Save"));
+        controlInventory.setItem(18, createButton(5, "Test And Save"));
+        controlInventory.setItem(12, new CounterButton(Material.COMMAND, 4,  "max # of colors"));
         controlInventory.setItem(13, createButton(1, "Randomize"));
+        controlInventory.setItem(14, new ToggleButton(false, "Randomized Paths"));
         controlInventory.setItem(17, createButton(14, "Dismiss"));
 
         addColorPallet(27, controlInventory);
@@ -46,8 +51,6 @@ public class LevelCreationInventory {
         player.getInventory().setContents(controlInventory.getContents());
 
     }
-
-
 
 
     private ItemStack createButton(int colorID, String label) {
@@ -69,12 +72,7 @@ public class LevelCreationInventory {
         barrierMeta.setDisplayName("Barrier Block");
         barrier.setItemMeta(barrierMeta);
         inventory.setItem(startingPoint, barrier);
-
-        ItemStack empty = new ItemStack(Material.BARRIER, 1);
-        ItemMeta emptyMeta = empty.getItemMeta();
-        emptyMeta.setDisplayName("Void");
-        empty.setItemMeta(emptyMeta);
-        inventory.setItem(startingPoint+1, empty);
+        inventory.setItem(startingPoint+1, barrier);
 
         for(int i = 0; i < 16; i++) {
 

@@ -18,6 +18,7 @@ public class BukkitFlow extends JavaPlugin {
         PluginManager pluginManager = this.getServer().getPluginManager();
         pluginManager.registerEvents(new DragHandler(),this);
         pluginManager.registerEvents(new DropBlocker(),this);
+        pluginManager.registerEvents(new CounterButtonHandler(),this);
         pluginManager.registerEvents(new LevelCreationHandlers(), this);
         pluginManager.registerEvents(new CloseInventoryHandler(), this);
 

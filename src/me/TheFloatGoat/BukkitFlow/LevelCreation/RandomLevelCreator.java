@@ -3,44 +3,42 @@ package me.TheFloatGoat.BukkitFlow.LevelCreation;
 import me.TheFloatGoat.BukkitFlow.Helpers.InventoryHelpers;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 import java.util.*;
 
 public class RandomLevelCreator {
 
-    Plugin plugin;
     InventoryHelpers IH = new InventoryHelpers();
-
-    public RandomLevelCreator(Plugin plugin) {
-        this.plugin = plugin;
-    }
-
+    public static int colors = 4;
+    public static boolean randomizePaths = true;
     Set<Integer> possible;
+    Random random;
+
+    public RandomLevelCreator() {
+        random = new Random();
+    }
 
     public ItemStack[] createLevel() {
 
-        System.out.println("randomlevelcreator.createlevel");
-
         ItemStack[] level = new ItemStack[54];
 
-        //1. Create a number of random paths - check
-        //2. Try to fill the gaps by appending the neighbouring squares, check with pathchecker
+        //1. Create a number of random paths
+        //2. Try to fill the gaps by appending the neighbouring squares
         //3.fill the rest with bars
-
-        int colors = 7;
 
         possible = new HashSet();
         for(int i = 0; i<54; i++) {
             possible.add(i);
         }
 
-        for(int i = 0; i <= colors && possible.size() > 2; i++) {
+        for(int i = 0; i < colors && possible.size() > 2; i++) {
 
             List<Integer> path = newPath();
-            for(int j = 0; j < path.size(); j++) {
-                //Sets the item to anchor point if it is the start or end of a path.
-                level[path.get(j)] = IH.genItem(j == 0 || j == path.size()-1, i);
+            if (path.size() > 1) {  //We don't want single point paths, 2 anchor points next to each other is okay though
+                for (int j = 0; j < path.size(); j++) {
+                    //Sets the item to anchor point if it is the start or end of a path.
+                    level[path.get(j)] = IH.genItem(j == 0 || j == path.size() - 1, i);
+                }
             }
         }
 
@@ -96,11 +94,10 @@ public class RandomLevelCreator {
 
         Random random = new Random();
         int number = random.nextInt(possible.size());
-        System.out.println(possible.size());
 
         int startPos = (int) possible.toArray()[number];
 
-        int maxPathLength = 5 + random.nextInt(9);
+        int maxPathLength = (54/colors) + random.nextInt(4);
 
         int curPos = startPos;
         possible.remove(curPos);
@@ -108,9 +105,11 @@ public class RandomLevelCreator {
 
         for(int i = 0; i < maxPathLength-1; i++) {
 
-            for (int j = -3; j <= 3; j += 2) {      //TODO USE A RANDOM ORDER HERE!
+            int[] dirs = new int[]{-9,-1,1,9};
+            if (randomizePaths) Collections.shuffle(Arrays.asList(dirs));
 
-                int nextPos = curPos + (int)(Math.signum(j)*j*j);   //-9, -1, 1, 9
+            for (int curDir :dirs){
+                int nextPos = curPos + curDir;
                 //Check for screen wrapping.
                 if(Math.abs(nextPos%9 - curPos%9) > 1) continue;
 
@@ -119,7 +118,6 @@ public class RandomLevelCreator {
                     path.add(nextPos);
                     possible.remove(nextPos);
                     curPos = nextPos;
-                    j = 42; //to break the guard
                 }
             }
         }
@@ -128,5 +126,8 @@ public class RandomLevelCreator {
 
     }
 
+    public void setColors(int a) {
+        this.colors = a;
+    }
 
 }
